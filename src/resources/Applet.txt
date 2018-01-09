@@ -1,0 +1,31 @@
+/* 
+ * File: ${name}.java
+ * Author: ${user}
+ * Assignment: ${project.displayName} - ${course}
+ * Vers: 1.0.0 ${date?date?string("MM/dd/yyyy")} ${initials} - initial coding
+ *
+ * Credits: (if any for sections of code)
+ */
+
+<#if package?? && package != "">
+package ${package};
+
+</#if>
+import java.applet.Applet;
+
+/**
+ *
+ * @author ${user}
+ */
+public class ${name} extends Applet {
+
+    /**
+     * Initialization method that will be called after the applet is loaded
+     * into the browser.
+     */
+    public void init() {
+        // TODO start asynchronous download of heavy resources
+    }
+
+    // TODO overwrite start(), stop() and destroy() methods
+}

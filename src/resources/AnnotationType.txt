@@ -1,0 +1,20 @@
+/* 
+ * File: ${name}.java
+ * Author: ${user}
+ * Assignment: ${project.displayName} - ${course}
+ * Vers: 1.0.0 ${date?date?string("MM/dd/yyyy")} ${initials} - initial coding
+ *
+ * Credits: (if any for sections of code)
+ */
+
+<#if package?? && package != "">
+package ${package};
+
+</#if>
+/**
+ *
+ * @author ${user}
+ */
+public @interface ${name} {
+
+}

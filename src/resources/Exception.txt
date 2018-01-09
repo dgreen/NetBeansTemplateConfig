@@ -1,0 +1,34 @@
+/* 
+ * File: ${name}.java
+ * Author: ${user}
+ * Assignment: ${project.displayName} - ${course}
+ * Vers: 1.0.0 ${date?date?string("MM/dd/yyyy")} ${initials} - initial coding
+ *
+ * Credits: (if any for sections of code)
+ */
+
+<#if package?? && package != "">
+package ${package};
+
+</#if>
+/**
+ *
+ * @author ${user}
+ */
+public class ${name} extends Exception {
+
+    /**
+     * Creates a new instance of <code>${name}</code> without detail message.
+     */
+    public ${name}() {
+    }
+
+
+    /**
+     * Constructs an instance of <code>${name}</code> with the specified detail message.
+     * @param msg the detail message.
+     */
+    public ${name}(String msg) {
+        super(msg);
+    }
+}
