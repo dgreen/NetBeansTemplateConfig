@@ -34,7 +34,7 @@ import java.util.Comparator;
 
 /**
  * Class to model the main window of the Template initializer for NetBeans in 
- * the EE 333 course at UAB
+ * the EE333 course at UAB
  * 
  * @author Dylan Dalton <dbdalton@uab.edu>
  * @author Schauber Gbalou <schauber@uab.edu>
@@ -86,11 +86,11 @@ public class Main extends javax.swing.JFrame {
         setResizable(false);
 
         CourseSelectButtonGroup.add(EE233RadioButton);
-        EE233RadioButton.setText("EE 233");
+        EE233RadioButton.setText("EE233");
         EE233RadioButton.setEnabled(false);
 
         CourseSelectButtonGroup.add(EE333RadioButton);
-        EE333RadioButton.setText("EE 333");
+        EE333RadioButton.setText("EE333");
 
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, EE333RadioButton, org.jdesktop.beansbinding.ELProperty.create("${selected}"), EE333RadioButton, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
@@ -191,7 +191,7 @@ public class Main extends javax.swing.JFrame {
 
     /**
      * Button click checks to ensure all required fields are filled in, then 
-     * generates the necessary templates for the EE 333 course and places them 
+     * generates the necessary templates for the EE333 course and places them 
      * in the specific location that NetBeans references on creation of new 
      * class files
      * 
@@ -342,7 +342,7 @@ public class Main extends javax.swing.JFrame {
         List<String> props = Arrays.asList(
                 "user = " + name + " <" + blazerID + "@uab.edu>",
                 "initials = " + initials, 
-                "course = EE 333 " + semester);
+                "course = EE333 " + semester);
         
         // make the propertiesDirectory editable
         propsDir.toFile().setWritable(true);
