@@ -19,6 +19,7 @@ package bin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.nio.file.Files;
@@ -276,6 +277,8 @@ public class Main extends javax.swing.JFrame {
                     
                 } catch (Exception e) {
                     System.out.println("Error finding template folder: " + e);
+                    e.printStackTrace();
+                    System.exit(1);
                 }
                 
             } else {
@@ -386,36 +389,26 @@ public class Main extends javax.swing.JFrame {
         saveDir = saveDir.resolve("Classes");
         saveDir.toFile().setWritable(true);
         
-        try {
-            // Get the directory of the template copies from jar classpath
-            Path templatesDir = Paths.get(new File(Main.class
-                                                       .getProtectionDomain()
-                                                       .getCodeSource()
-                                                       .getLocation()
-                                                       .toURI()
-                                                       .getPath())
-                                                  .getParentFile()
-                                                  .getParentFile()
-                                                  .getPath())
-                                     .resolve("src")
-                                     .resolve("resources");
-            
+        try {            
             // Create the "Classes" directory for templates
             Files.createDirectories(saveDir);
             
             // Loop through the different templatestypes, copying each to the 
             // saveDirectory in a .java form
             for (String templateType : templateTypes) {
+                InputStream in = getClass().getResourceAsStream("/resources/" + templateType + ".txt");
+                // System.out.println("Looking for " + templateType + " got " + in);
                 Files.copy(
-                    templatesDir.resolve(templateType + ".txt"),
+                    in,
                     saveDir.resolve(templateType + ".java"),
                     StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
             System.out.println("Template copy error: " + e);
-        } catch (URISyntaxException e) {
-            System.out.println("Error finding templates: " + e);
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
         }
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
