@@ -6,6 +6,9 @@
  *          Joey Richardson <Rich0925@uab.edu>
  *          Darrin Wang <darrinw@uab.edu>
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.2.0 01/23/2018 dgg - remove angle brackets around e-mail as the
+ *                              JavaDoc tool thinks this is a tag
+ *                            - earlier: fixed reading from JAR File
  * Vers: 1.1.0 12/12/2017 - final code cleanup and build
  * Vers: 1.0.2 12/07/2017 - added mac os support + initial build
  * Vers: 1.0.1 12/06/2017 - added search pathing for windows 
@@ -343,7 +346,7 @@ public class Main extends javax.swing.JFrame {
         
         // create the strings to be added into the user.properties file
         List<String> props = Arrays.asList(
-                "user = " + name + " <" + blazerID + "@uab.edu>",
+                "user = " + name + " " + blazerID + "@uab.edu",
                 "initials = " + initials, 
                 "course = EE333 " + semester);
         
