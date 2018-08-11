@@ -6,6 +6,11 @@
  *          Joey Richardson <Rich0925@uab.edu>
  *          Darrin Wang <darrinw@uab.edu>
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.3.0 08/11/2018 dgg - Add javafx templates also.  Note that NB 9
+ *                              does not support modifying GUI in it now due
+ *                              change in NB9 licensing not allowing GPL and
+ *                              no support for post install.  This will probably
+ *                              mean a conversion to JavaFX.
  * Vers: 1.2.0 01/23/2018 dgg - remove angle brackets around e-mail as the
  *                              JavaDoc tool thinks this is a tag
  *                            - earlier: fixed reading from JAR File
@@ -243,7 +248,7 @@ public class Main extends javax.swing.JFrame {
                     
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
-                    genTemplates(tempPath);
+                    genAllTemplates(tempPath);
                     
                     // close the program
                     System.exit(0);
@@ -273,7 +278,7 @@ public class Main extends javax.swing.JFrame {
                     
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
-                    genTemplates(tempPath);
+                    genAllTemplates(tempPath);
                     
                     // close the program
                     System.exit(0);
@@ -367,14 +372,13 @@ public class Main extends javax.swing.JFrame {
     }
     
     /**
-     * Function to generate the templates and place them in their specified 
-     * folder
+     * Function to generate templates for various folders
      * 
      * @param saveDir path to save files to
      */
-    private void genTemplates(Path saveDir){
+    private void genAllTemplates(Path saveDir){
         
-        // make an arrayList of the types of templates for reference
+        // Basic Classes
         List<String> templateTypes = new ArrayList<>();
         templateTypes.addAll(Arrays.asList( "AnnotationType",
                                             "Applet",
@@ -387,13 +391,35 @@ public class Main extends javax.swing.JFrame {
                                             "package-info",
                                             "Singleton"));
         
+        Path cSaveDir = saveDir.resolve("");        // copy
+        genTemplates(cSaveDir, "Classes", templateTypes);
+        
+        // JavaFx Classes
+        templateTypes = new ArrayList<>();
+        templateTypes.addAll(Arrays.asList( "FXMain",
+                                            "FXML",
+                                            "FXPreloader",
+                                            "FXSwingMain"));
+        Path fxSaveDir = saveDir.resolve("");       // copy
+        genTemplates(fxSaveDir, "javafx", templateTypes);
+    }
+    
+    
+    /**
+     * Function to generate the templates and place them in their specified 
+     * folder
+     * 
+     * @param saveDir path to save files to
+     */
+    private void genTemplates(Path saveDir, String folder, List<String> templateTypes){
+        
         // update the saveDirectory to the "classes" folder 
         // make the saveDirectory able to be edited
-        saveDir = saveDir.resolve("Classes");
+        saveDir = saveDir.resolve(folder);
         saveDir.toFile().setWritable(true);
         
         try {            
-            // Create the "Classes" directory for templates
+            // Create the folder directory for templates
             Files.createDirectories(saveDir);
             
             // Loop through the different templatestypes, copying each to the 
