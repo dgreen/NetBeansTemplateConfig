@@ -5,7 +5,11 @@
  *          Matthew Manuel <mmanuel@uab.edu>
  *          Joey Richardson <Rich0925@uab.edu>
  *          Darrin Wang <darrinw@uab.edu>
+ *
+ * Later Author:  David Green <DGreen@uab.edu>
+ *
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.4.0 01/05/2019 dgg - Change support to CoolBeans (spefically 2018.12)
  * Vers: 1.3.0 08/11/2018 dgg - Add javafx templates also.  Note that NB 9
  *                              does not support modifying GUI in it now due
  *                              change in NB9 licensing not allowing GPL and
@@ -45,11 +49,12 @@ import java.util.Comparator;
  * Class to model the main window of the Template initializer for NetBeans in 
  * the EE333 course at UAB
  * 
- * @author Dylan Dalton <dbdalton@uab.edu>
- * @author Schauber Gbalou <schauber@uab.edu>
- * @author Matthew Manuel <mmanuel@uab.edu>
- * @author Joey Richardson <Rich0925@uab.edu>
- * @author Darrin Wang <darrinw@uab.edu>
+ * @author Dylan Dalton (dbdalton@uab.edu)
+ * @author Schauber Gbalou (schauber@uab.edu)
+ * @author Matthew Manuel (mmanuel@uab.edu)
+ * @author Joey Richardson (Rich0925@uab.edu)
+ * @author Darrin Wang (darrinw@uab.edu)
+ * @author David Greeen (DGreen@uab.edu)
  */
 public class Main extends javax.swing.JFrame {
 
@@ -233,8 +238,8 @@ public class Main extends javax.swing.JFrame {
                     // Get the "Appdata" environmental variable 
                     String dir = System.getenv("Appdata");
                     
-                    // Get path variable of Appdata/Netbeans
-                    Path direc = Paths.get(dir, "Netbeans");
+                    // Get path variable of Appdata/CoolBeans
+                    Path direc = Paths.get(dir, "CoolBeans");
                     
                     // Get a stream of paths in the direc Path variable
                     // Filter to only include directories
@@ -264,7 +269,7 @@ public class Main extends javax.swing.JFrame {
                     String dir = System.getenv("HOME");
                     Path direc = Paths.get(dir, "Library", 
                             "Application Support", 
-                            "NetBeans");
+                            "CoolBeans");
                     
                     // Get a stream of paths in the direc path variable
                     // filter to only include directories
