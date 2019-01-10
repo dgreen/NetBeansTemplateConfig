@@ -9,6 +9,7 @@
  * Later Author:  David Green <DGreen@uab.edu>
  *
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.4.1 01/09/2019 dgg - Windows path was incorrect (at least on some machines)
  * Vers: 1.4.0 01/05/2019 dgg - Change support to CoolBeans (spefically 2018.12)
  * Vers: 1.3.0 08/11/2018 dgg - Add javafx templates also.  Note that NB 9
  *                              does not support modifying GUI in it now due
@@ -236,10 +237,25 @@ public class Main extends javax.swing.JFrame {
                 
                 try {
                     // Get the "Appdata" environmental variable 
-                    String dir = System.getenv("Appdata");
+                    String dir = System.getenv("AppData");
                     
-                    // Get path variable of Appdata/CoolBeans
-                    Path direc = Paths.get(dir, "CoolBeans");
+                    // Get path variable of Appdata/Roaming/NetBeans
+                    Path dirFlat    = Paths.get(dir, "NetBeans");
+                    Path dirRoaming = Paths.get(dir, "Roaming", "NetBeans");
+                    
+                    File dirFlatFile     = dirFlat.toFile();
+                    File dirRoamingFile  = dirRoaming.toFile();
+                    
+                    Path direc = null;
+                    
+                    // Pick the right path based on testing for the NetBeans dir                    
+                    if        ( dirFlatFile.exists() )    {
+                        direc = dirFlat;
+                    } else if ( dirRoamingFile.exists() ) {
+                        direc = dirRoaming;
+                    } else                                {
+                        throw new Exception("NetBeans dir is not in AppData nor in AppData\\Roaming");
+                    }
                     
                     // Get a stream of paths in the direc Path variable
                     // Filter to only include directories
