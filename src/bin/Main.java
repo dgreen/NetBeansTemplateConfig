@@ -9,8 +9,9 @@
  * Later Author:  David Green <DGreen@uab.edu>
  *
  * Assignment: Group GUI - EE333 Fall 2017
- * Vers: 1.4.1 01/09/2019 dgg - Windows path was incorrect (at least on some machines)
- * Vers: 1.4.0 01/05/2019 dgg - Change support to CoolBeans (spefically 2018.12)
+ * Vers: 1.4.2 01/09/2019 dgg - Windows path was incorrect (at least on some machines)
+ *                              Logic for deducing proper "latest" version fixed
+ *                              Change support to CoolBeans (spefically 2018.12)
  * Vers: 1.3.0 08/11/2018 dgg - Add javafx templates also.  Note that NB 9
  *                              does not support modifying GUI in it now due
  *                              change in NB9 licensing not allowing GPL and
@@ -241,7 +242,7 @@ public class Main extends javax.swing.JFrame {
                     
                     // Get path variable of Appdata/Roaming/NetBeans
                     Path dirFlat    = Paths.get(dir, "NetBeans");
-                    Path dirRoaming = Paths.get(dir, "Roaming", "NetBeans");
+                    Path dirRoaming = Paths.get(dir, "NetBeans");
                     
                     File dirFlatFile     = dirFlat.toFile();
                     File dirRoamingFile  = dirRoaming.toFile();
@@ -250,23 +251,31 @@ public class Main extends javax.swing.JFrame {
                     
                     // Pick the right path based on testing for the NetBeans dir                    
                     if        ( dirFlatFile.exists() )    {
-                        direc = dirFlat;
+                        direc = Paths.get(dir, "NetBeans",
+                                "2018.12",
+                                "config",
+                                "Templates");
                     } else if ( dirRoamingFile.exists() ) {
-                        direc = dirRoaming;
+                        direc = Paths.get(dir, "NetBeans",
+                                "2018.12",
+                                "config",
+                                "Templates");
                     } else                                {
                         throw new Exception("NetBeans dir is not in AppData nor in AppData\\Roaming");
                     }
                     
-                    // Get a stream of paths in the direc Path variable
-                    // Filter to only include directories
-                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
+//                    // Get a stream of paths in the direc Path variable
+//                    // Filter to only include directories
+//                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
+//                    
+//                    // Get max folder by natural order (most recent version)
+//                    // Resolve to the templates folder
+//                    Path tempPath = paths.max(Comparator.naturalOrder())
+//                                         .get()
+//                                         .resolve("config").resolve("Templates");
                     
-                    // Get max folder by natural order (most recent version)
-                    // Resolve to the templates folder
-                    Path tempPath = paths.max(Comparator.naturalOrder())
-                                         .get()
-                                         .resolve("config").resolve("Templates");
-                    
+                    Path tempPath = direc; 
+
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
                     genAllTemplates(tempPath);
@@ -283,20 +292,30 @@ public class Main extends javax.swing.JFrame {
                     // Get the "HOME" environmental variable path
                     // navigate to the Netbeans folder inside
                     String dir = System.getenv("HOME");
-                    Path direc = Paths.get(dir, "Library", 
-                            "Application Support", 
-                            "CoolBeans");
+//                    Path direc = Paths.get(dir, "Library", 
+//                            "Application Support", 
+//                            "CoolBeans");
                     
-                    // Get a stream of paths in the direc path variable
-                    // filter to only include directories
-                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
+                    // hardcode path for temporary fix
+                    Path direc = Paths.get(dir, "Library",
+                             "Application Support", 
+                             "CoolBeans",
+                             "2018.12",
+                             "config",
+                             "Templates");
+            
+//                    // Get a stream of paths in the direc path variable
+//                    // filter to only include directories
+//                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
+//                    
+//                    // get max folder by natural order (most recent version)
+//                    // resolve to the templates folder
+//                    Path tempPath = paths.max(Comparator.naturalOrder())
+//                            .get()
+//                            .resolve("config").resolve("Templates");
                     
-                    // get max folder by natural order (most recent version)
-                    // resolve to the templates folder
-                    Path tempPath = paths.max(Comparator.naturalOrder())
-                            .get()
-                            .resolve("config").resolve("Templates");
-                    
+                    Path tempPath = direc;
+
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
                     genAllTemplates(tempPath);
