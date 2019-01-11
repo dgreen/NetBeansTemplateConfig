@@ -235,14 +235,13 @@ public class Main extends javax.swing.JFrame {
             String os = System.getProperty("os.name");
             if (os.startsWith("Windows")){
                 
-                
                 try {
                     // Get the "Appdata" environmental variable 
                     String dir = System.getenv("AppData");
                     
                     // Get path variable of Appdata/Roaming/NetBeans
                     Path dirFlat    = Paths.get(dir, "NetBeans");
-                    Path dirRoaming = Paths.get(dir, "NetBeans");
+                    Path dirRoaming = Paths.get(dir, "NetBeans", "Roaming");
                     
                     File dirFlatFile     = dirFlat.toFile();
                     File dirRoamingFile  = dirRoaming.toFile();
@@ -251,31 +250,23 @@ public class Main extends javax.swing.JFrame {
                     
                     // Pick the right path based on testing for the NetBeans dir                    
                     if        ( dirFlatFile.exists() )    {
-                        direc = Paths.get(dir, "NetBeans",
-                                "2018.12",
-                                "config",
-                                "Templates");
+                        direc = dirFlat;
                     } else if ( dirRoamingFile.exists() ) {
-                        direc = Paths.get(dir, "NetBeans",
-                                "2018.12",
-                                "config",
-                                "Templates");
+                        direc = dirRoaming;
                     } else                                {
                         throw new Exception("NetBeans dir is not in AppData nor in AppData\\Roaming");
                     }
                     
-//                    // Get a stream of paths in the direc Path variable
-//                    // Filter to only include directories
-//                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
-//                    
-//                    // Get max folder by natural order (most recent version)
-//                    // Resolve to the templates folder
-//                    Path tempPath = paths.max(Comparator.naturalOrder())
-//                                         .get()
-//                                         .resolve("config").resolve("Templates");
+                    // Get a stream of paths in the direc Path variable
+                    // Filter to only include directories
+                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
                     
-                    Path tempPath = direc; 
-
+                    // Get max folder by natural order (most recent version)
+                    // Resolve to the templates folder
+                    Path tempPath = paths.max(Comparator.comparingDouble(p -> Double.valueOf(p.getFileName().toString())))
+                                         .get()
+                                         .resolve("config").resolve("Templates");
+                    
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
                     genAllTemplates(tempPath);
@@ -292,30 +283,20 @@ public class Main extends javax.swing.JFrame {
                     // Get the "HOME" environmental variable path
                     // navigate to the Netbeans folder inside
                     String dir = System.getenv("HOME");
-//                    Path direc = Paths.get(dir, "Library", 
-//                            "Application Support", 
-//                            "CoolBeans");
+                    Path direc = Paths.get(dir, "Library", 
+                            "Application Support", 
+                            "CoolBeans");
+                                
+                    // Get a stream of paths in the direc path variable
+                    // filter to only include directories
+                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
                     
-                    // hardcode path for temporary fix
-                    Path direc = Paths.get(dir, "Library",
-                             "Application Support", 
-                             "CoolBeans",
-                             "2018.12",
-                             "config",
-                             "Templates");
-            
-//                    // Get a stream of paths in the direc path variable
-//                    // filter to only include directories
-//                    Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
-//                    
-//                    // get max folder by natural order (most recent version)
-//                    // resolve to the templates folder
-//                    Path tempPath = paths.max(Comparator.naturalOrder())
-//                            .get()
-//                            .resolve("config").resolve("Templates");
+                    // get max folder by treating file names as doubles
+                    // resolve to the templates folder
+                    Path tempPath = paths.max(Comparator.comparingDouble(p -> Double.valueOf(p.getFileName().toString())))
+                            .get()
+                            .resolve("config").resolve("Templates");
                     
-                    Path tempPath = direc;
-
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
                     genAllTemplates(tempPath);
