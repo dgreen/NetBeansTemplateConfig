@@ -9,6 +9,7 @@
  * Later Author:  David Green <DGreen@uab.edu>
  *
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.5.0 01/18/2019 dgg - Add templates for JUnit 4 & 5, TestNG
  * Vers: 1.4.2 01/09/2019 dgg - Windows path was incorrect (at least on some machines)
  *                              Logic for deducing proper "latest" version fixed
  *                              Change support to CoolBeans (spefically 2018.12)
@@ -423,6 +424,15 @@ public class Main extends javax.swing.JFrame {
                                             "FXSwingMain"));
         Path fxSaveDir = saveDir.resolve("");       // copy
         genTemplates(fxSaveDir, "javafx", templateTypes);
+        
+        // Basic Unit Tests
+        templateTypes = new ArrayList<>();
+        templateTypes.addAll(Arrays.asList( "EmptyTestNGTest",
+                                            "JUnit4TestClass",
+                                            "JUnit5TestClass"));
+        Path utSaveDir = saveDir.resolve("");       // copy
+        genTemplates(utSaveDir, "UnitTests", templateTypes);
+        
     }
     
     
