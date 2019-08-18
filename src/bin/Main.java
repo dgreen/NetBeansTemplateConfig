@@ -240,9 +240,9 @@ public class Main extends javax.swing.JFrame {
                     // Get the "Appdata" environmental variable 
                     String dir = System.getenv("AppData");
                     
-                    // Get path variable of Appdata/Roaming/NetBeans
-                    Path dirFlat    = Paths.get(dir, "NetBeans");
-                    Path dirRoaming = Paths.get(dir, "NetBeans", "Roaming");
+                    // Get path variable of Appdata/Roaming/CoolBeans
+                    Path dirFlat    = Paths.get(dir, "CoolBeans");
+                    Path dirRoaming = Paths.get(dir, "CoolBeans", "Roaming");
                     
                     File dirFlatFile     = dirFlat.toFile();
                     File dirRoamingFile  = dirRoaming.toFile();
