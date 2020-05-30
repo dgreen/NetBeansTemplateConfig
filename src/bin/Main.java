@@ -6,7 +6,7 @@
  *          Joey Richardson <Rich0925@uab.edu>
  *          Darrin Wang <darrinw@uab.edu>
  * Assignment: Group GUI - EE333 Fall 2017
- * Vers: 1.6.1 05/29/2020 dgg - Change back to NetBeans
+ * Vers: 1.6.3 05/29/2020 dgg - Change back to NetBeans
  * Vers: 1.6.0 12/05/2019 dgg - CoolBeans renamed to OpenBeans
  * Vers: 1.5.0 01/18/2019 dgg - Add templates for JUnit 4 & 5, TestNG
  * Vers: 1.4.2 01/09/2019 dgg - Windows path was incorrect (at least on some machines)
@@ -423,6 +423,14 @@ public class Main extends javax.swing.JFrame {
                                             "FXSwingMain"));
         Path fxSaveDir = saveDir.resolve("");       // copy
         genTemplates(fxSaveDir, "javafx", templateTypes);
+
+        // Unit Tests
+        templateTypes = new ArrayList<>();
+        templateTypes.addAll(Arrays.asList( "JUnit4TestClass",
+                                            "JUnit5TestClass",
+                                            "EmptyTestNGTest"));
+        Path unitSaveDir = saveDir.resolve("");       // copy
+        genTemplates(unitSaveDir, "UnitTests", templateTypes);
     }
     
     
