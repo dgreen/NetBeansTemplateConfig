@@ -9,6 +9,7 @@
  * Later Author:  David Green <DGreen@uab.edu>
  *
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.6.1 05/29/2020 dgg - Change back to NetBeans
  * Vers: 1.6.0 12/05/2019 dgg - CoolBeans renamed to OpenBeans
  * Vers: 1.5.0 01/18/2019 dgg - Add templates for JUnit 4 & 5, TestNG
  * Vers: 1.4.2 01/09/2019 dgg - Windows path was incorrect (at least on some machines)
@@ -241,16 +242,16 @@ public class Main extends javax.swing.JFrame {
                     // Get the "Appdata" environmental variable 
                     String dir = System.getenv("AppData");
                     
-                    // Get path variable of Appdata/Roaming/OpenBeans
-                    Path dirFlat    = Paths.get(dir, "OpenBeans");
-                    Path dirRoaming = Paths.get(dir, "OpenBeans", "Roaming");
+                    // Get path variable of Appdata/Roaming/NetBeans
+                    Path dirFlat    = Paths.get(dir, "NetBeans");
+                    Path dirRoaming = Paths.get(dir, "NetBeans", "Roaming");
                     
                     File dirFlatFile     = dirFlat.toFile();
                     File dirRoamingFile  = dirRoaming.toFile();
                     
                     Path direc = null;
                     
-                    // Pick the right path based on testing for the OpenBeans dir                    
+                    // Pick the right path based on testing for the NetBeans dir                    
                     if        ( dirFlatFile.exists() )    {
                         direc = dirFlat;
                     } else if ( dirRoamingFile.exists() ) {
@@ -287,7 +288,7 @@ public class Main extends javax.swing.JFrame {
                     String dir = System.getenv("HOME");
                     Path direc = Paths.get(dir, "Library", 
                             "Application Support", 
-                            "OpenBeans");
+                            "NetBeans");
                                 
                     // Get a stream of paths in the direc path variable
                     // filter to only include directories
