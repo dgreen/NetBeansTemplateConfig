@@ -6,6 +6,12 @@
  *          Joey Richardson <Rich0925@uab.edu>
  *          Darrin Wang <darrinw@uab.edu>
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.6.1 05/29/2020 dgg - Change back to NetBeans
+ * Vers: 1.6.0 12/05/2019 dgg - CoolBeans renamed to OpenBeans
+ * Vers: 1.5.0 01/18/2019 dgg - Add templates for JUnit 4 & 5, TestNG
+ * Vers: 1.4.2 01/09/2019 dgg - Windows path was incorrect (at least on some machines)
+ *                              Logic for deducing proper "latest" version fixed
+ *                              Change support to CoolBeans (spefically 2018.12)
  * Vers: 1.3.0 08/11/2018 dgg - Add javafx templates also.  Note that NB 9
  *                              does not support modifying GUI in it now due
  *                              change in NB9 licensing not allowing GPL and
@@ -57,7 +63,7 @@ public class Main extends javax.swing.JFrame {
     private String initials;
     private String blazerID;
     private String semester;
-    
+
     /**
      * Creates new form Main (constructor for GUI class)
      */
@@ -231,10 +237,25 @@ public class Main extends javax.swing.JFrame {
                 
                 try {
                     // Get the "Appdata" environmental variable 
-                    String dir = System.getenv("Appdata");
+                    String dir = System.getenv("AppData");
                     
-                    // Get path variable of Appdata/Netbeans
-                    Path direc = Paths.get(dir, "Netbeans");
+                    // Get path variable of Appdata/Roaming/NetBeans
+                    Path dirFlat    = Paths.get(dir, "NetBeans");
+                    Path dirRoaming = Paths.get(dir, "NetBeans", "Roaming");
+                    
+                    File dirFlatFile     = dirFlat.toFile();
+                    File dirRoamingFile  = dirRoaming.toFile();
+                    
+                    Path direc = null;
+                    
+                    // Pick the right path based on testing for the NetBeans dir                    
+                    if        ( dirFlatFile.exists() )    {
+                        direc = dirFlat;
+                    } else if ( dirRoamingFile.exists() ) {
+                        direc = dirRoaming;
+                    } else                                {
+                        throw new Exception("NetBeans dir is not in AppData nor in AppData\\Roaming");
+                    }
                     
                     // Get a stream of paths in the direc Path variable
                     // Filter to only include directories
@@ -265,7 +286,7 @@ public class Main extends javax.swing.JFrame {
                     Path direc = Paths.get(dir, "Library", 
                             "Application Support", 
                             "NetBeans");
-                    
+                                
                     // Get a stream of paths in the direc path variable
                     // filter to only include directories
                     Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
