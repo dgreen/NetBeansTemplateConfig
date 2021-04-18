@@ -1,16 +1,9 @@
 /*
- * File: ${name}.java
  * Author: ${user}
  * Assignment:  ${project.displayName} - ${course}
- * Vers: 1.0.0 ${date?date?string("MM/dd/yyyy")} ${initials} - initial coding
  *
  * Credits:  (if any for sections of code)
  */
-<#assign licenseFirst = "/*">
-<#assign licensePrefix = " * ">
-<#assign licenseLast = " */">
-<#include "${project.licensePath}">
-
 <#if package?? && package != "">
 package ${package};
 </#if>

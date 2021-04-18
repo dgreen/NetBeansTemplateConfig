@@ -1,12 +1,9 @@
-/* 
- * File: ${name}.java
+/*
  * Author: ${user}
- * Assignment: ${project.displayName} - ${course}
- * Vers: 1.0.0 ${date?date?string("MM/dd/yyyy")} ${initials} - initial coding
+ * Assignment:  ${project.displayName} - ${course}
  *
- * Credits: (if any for sections of code)
+ * Credits:  (if any for sections of code)
  */
-
 <#if package?? && package != "">
 package ${package};
 </#if>

@@ -1,22 +1,13 @@
 /*
- * File: ${name}.java
  * Author: ${user}
  * Assignment:  ${project.displayName} - ${course}
- * Vers: 1.0.0 ${date?date?string("MM/dd/yyyy")} ${initials} - initial coding
  *
  * Credits:  (if any for sections of code)
  */
-
-<#-- derived from FreeMarker template (see http://freemarker.org/) -->
-<#assign licenseFirst = "/*">
-<#assign licensePrefix = " * ">
-<#assign licenseLast = " */">
-<#include "${project.licensePath}">
-
- <#if package?? && package != "">
+<#if package?? && package != "">
 package ${package};
+</#if>
 
- </#if>
 <#if methodTearDown!false>
 import org.junit.jupiter.api.AfterEach;
 </#if>
