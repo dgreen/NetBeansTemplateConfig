@@ -371,7 +371,7 @@ public class Main extends javax.swing.JFrame {
 
         // create the strings to be added into the user.properties file
         List<String> props = Arrays.asList(
-                "user = " + name + " " + blazerID + "@uab.edu",
+                "user = " + name + " <" + blazerID + "@uab.edu>",
                 "initials = " + initials,
                 "course = EE333 " + semester);
 
