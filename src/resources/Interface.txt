@@ -10,7 +10,6 @@ package ${package};
 
 /**
  *
- * @author ${user}
  */
 public interface ${name} {
 

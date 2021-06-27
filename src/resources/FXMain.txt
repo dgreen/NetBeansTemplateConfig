@@ -17,7 +17,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 /**
  *
- * @author ${user}
  */
 public class ${name} extends Application {
 

@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 /**
  * Simple Preloader Using the ProgressBar Control
  *
- * @author ${user}
  */
 public class ${name} extends Preloader {
 

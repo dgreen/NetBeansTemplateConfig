@@ -12,7 +12,6 @@ import java.applet.Applet;
 
 /**
  *
- * @author ${user}
  */
 public class ${name} extends Applet {
 

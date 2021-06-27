@@ -12,7 +12,6 @@ import static org.testng.Assert.*;
 
 /**
  *
- * @author ${user}
  */
 public class ${name} {
 

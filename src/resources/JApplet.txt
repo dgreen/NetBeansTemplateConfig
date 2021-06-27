@@ -12,7 +12,6 @@ import javax.swing.JApplet;
 
 /**
  *
- * @author ${user}
  */
 public class ${name} extends JApplet {
 

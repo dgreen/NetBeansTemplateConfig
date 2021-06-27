@@ -23,7 +23,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 /**
  *
- * @author ${user}
  */
 public class ${name} extends JApplet {
 

@@ -1,4 +1,4 @@
-/* 
+/*
  * File: Main.java
  * Authors: Dylan Dalton <dbdalton@uab.edu>
  *          Schauber Gbalou <schauber@uab.edu>
@@ -22,35 +22,33 @@
  *                            - earlier: fixed reading from JAR File
  * Vers: 1.1.0 12/12/2017 - final code cleanup and build
  * Vers: 1.0.2 12/07/2017 - added mac os support + initial build
- * Vers: 1.0.1 12/06/2017 - added search pathing for windows 
+ * Vers: 1.0.1 12/06/2017 - added search pathing for windows
  * Vers: 1.0.0 12/05/2017 - initial coding
  *
- * Credits: multiple questions on StackOverflow inspired different sections of 
+ * Credits: multiple questions on StackOverflow inspired different sections of
  *              code
  */
-
 package bin;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.util.List;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
-import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
- * Class to model the main window of the Template initializer for NetBeans in 
+ * Class to model the main window of the Template initializer for NetBeans in
  * the EE333 course at UAB
- * 
+ *
  * @author Dylan Dalton <dbdalton@uab.edu>
  * @author Schauber Gbalou <schauber@uab.edu>
  * @author Matthew Manuel <mmanuel@uab.edu>
@@ -205,134 +203,135 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Button click checks to ensure all required fields are filled in, then 
-     * generates the necessary templates for the EE333 course and places them 
-     * in the specific location that NetBeans references on creation of new 
-     * class files
-     * 
-     * @param evt click of "generate templates" button 
+     * Button click checks to ensure all required fields are filled in, then
+     * generates the necessary templates for the EE333 course and places them in
+     * the specific location that NetBeans references on creation of new class
+     * files
+     *
+     * @param evt click of "generate templates" button
      */
     private void genTemplatesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genTemplatesButtonActionPerformed
         this.name = NameTextField.getText();
         this.blazerID = BlazerIdTextField.getText();
         this.initials = InitialsTextField.getText();
-        
+
         // Set the semester variable based on current time
-        if (LocalDateTime.now().getMonth().getValue() >= 8){
+        if (LocalDateTime.now().getMonth().getValue() >= 8) {
             semester = "Fall " + LocalDateTime.now().getYear();
-            
-        }else if (LocalDateTime.now().getMonth().getValue() <= 4){
+
+        } else if (LocalDateTime.now().getMonth().getValue() <= 4) {
             semester = "Spring " + LocalDateTime.now().getYear();
-            
-        }else {
+
+        } else {
             semester = "Summer " + LocalDateTime.now().getYear();
         }
-        
+
         // If none of the fields are empty
-        if ((! name.equals("")) && (! blazerID.equals("")) && (! initials.equals(""))){
+        if ((!name.equals("")) && (!blazerID.equals("")) && (!initials.equals(""))) {
             // Determine which os is being used..
             String os = System.getProperty("os.name");
-            if (os.startsWith("Windows")){
-                
-                
+            String nbu = System.getProperty("netbeans.user");
+            System.out.println(nbu);
+            if (os.startsWith("Windows")) {
+
                 try {
-                    // Get the "Appdata" environmental variable 
+                    // Get the "Appdata" environmental variable
                     String dir = System.getenv("AppData");
-                    
+
                     // Get path variable of Appdata/Roaming/NetBeans
-                    Path dirFlat    = Paths.get(dir, "NetBeans");
+                    Path dirFlat = Paths.get(dir, "NetBeans");
                     Path dirRoaming = Paths.get(dir, "NetBeans", "Roaming");
-                    
-                    File dirFlatFile     = dirFlat.toFile();
-                    File dirRoamingFile  = dirRoaming.toFile();
-                    
+
+                    File dirFlatFile = dirFlat.toFile();
+                    File dirRoamingFile = dirRoaming.toFile();
+
                     Path direc = null;
-                    
-                    // Pick the right path based on testing for the NetBeans dir                    
-                    if        ( dirFlatFile.exists() )    {
+
+                    // Pick the right path based on testing for the NetBeans dir
+                    if (dirFlatFile.exists()) {
                         direc = dirFlat;
-                    } else if ( dirRoamingFile.exists() ) {
+                    } else if (dirRoamingFile.exists()) {
                         direc = dirRoaming;
-                    } else                                {
+                    } else {
                         throw new Exception("NetBeans dir is not in AppData nor in AppData\\Roaming");
                     }
-                    
+
                     // Get a stream of paths in the direc Path variable
                     // Filter to only include directories
                     Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
-                    
+
                     // Get max folder by natural order (most recent version)
                     // Resolve to the templates folder
                     Path tempPath = paths.max(Comparator.naturalOrder())
-                                         .get()
-                                         .resolve("config").resolve("Templates");
-                    
+                            .get()
+                            .resolve("config").resolve("Templates");
+
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
                     genAllTemplates(tempPath);
-                    
+
                     // close the program
                     System.exit(0);
-                    
+
                 } catch (Exception e) {
                     System.out.println("Error finding template folder: " + e);
-                }              
-            } else if (os.startsWith("Mac")){
-                
+                }
+            } else if (os.startsWith("Mac")) {
+
                 try {
                     // Get the "HOME" environmental variable path
                     // navigate to the Netbeans folder inside
                     String dir = System.getenv("HOME");
-                    Path direc = Paths.get(dir, "Library", 
-                            "Application Support", 
+                    Path direc = Paths.get(dir, "Library",
+                            "Application Support",
                             "NetBeans");
-                                
+
                     // Get a stream of paths in the direc path variable
                     // filter to only include directories
                     Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
-                    
+
                     // get max folder by natural order (most recent version)
                     // resolve to the templates folder
                     Path tempPath = paths.max(Comparator.naturalOrder())
                             .get()
                             .resolve("config").resolve("Templates");
-                    
+
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
                     genAllTemplates(tempPath);
-                    
+
                     // close the program
                     System.exit(0);
-                    
+
                 } catch (Exception e) {
                     System.out.println("Error finding template folder: " + e);
                     e.printStackTrace();
                     System.exit(1);
                 }
-                
+
             } else {
                 System.out.println("unsupported opperating system");
                 //maybe add Linux support eventually..
             }
 
-        }else if (name.equals("") || blazerID.equals("") || initials.equals("")){
+        } else if (name.equals("") || blazerID.equals("") || initials.equals("")) {
             // this window stays to signify an error..
             NotFilledInError obj2 = new NotFilledInError();
             obj2.setVisible(true);
         }
-        
+
     }//GEN-LAST:event_genTemplatesButtonActionPerformed
 
     /**
      * Main function to initialize variables and setup GUI
-     * 
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -361,114 +360,113 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-    
+
     /**
-     * Function to create the user.properties folder and file based on the 
+     * Function to create the user.properties folder and file based on the
      * information typed into the initial window
-     * 
+     *
      * @param p path to save the file to
      */
-    private void genPropertiesFile(Path propsDir){
-        
+    private void genPropertiesFile(Path propsDir) {
+
         // create the strings to be added into the user.properties file
         List<String> props = Arrays.asList(
                 "user = " + name + " " + blazerID + "@uab.edu",
-                "initials = " + initials, 
+                "initials = " + initials,
                 "course = EE333 " + semester);
-        
+
         // make the propertiesDirectory editable
         propsDir.toFile().setWritable(true);
-        
+
         try {
             // make the properties folder
             propsDir = Files.createDirectories(propsDir.resolve("Properties"));
             propsDir = Paths.get(propsDir.toString(), "User.properties");
-            
+
             // create the user.properties file with the necessary strings
             Files.write(propsDir, props, Charset.forName("UTF-8"));
-            
+
         } catch (IOException x) {
             System.err.println("Error creating templates: " + x);
         }
     }
-    
+
     /**
      * Function to generate templates for various folders
-     * 
+     *
      * @param saveDir path to save files to
      */
-    private void genAllTemplates(Path saveDir){
-        
+    private void genAllTemplates(Path saveDir) {
+
         // Basic Classes
         List<String> templateTypes = new ArrayList<>();
-        templateTypes.addAll(Arrays.asList( "AnnotationType",
-                                            "Applet",
-                                            "Class",
-                                            "Enum",
-                                            "Exception",
-                                            "Interface",
-                                            "JApplet",
-                                            "Main",
-                                            "package-info",
-                                            "Singleton"));
-        
+        templateTypes.addAll(Arrays.asList("AnnotationType",
+                "Applet",
+                "Class",
+                "Enum",
+                "Exception",
+                "Interface",
+                "JApplet",
+                "Main",
+                "package-info",
+                "Singleton"));
+
         Path cSaveDir = saveDir.resolve("");        // copy
         genTemplates(cSaveDir, "Classes", templateTypes);
-        
+
         // JavaFx Classes
         templateTypes = new ArrayList<>();
-        templateTypes.addAll(Arrays.asList( "FXMain",
-                                            "FXML",
-                                            "FXPreloader",
-                                            "FXSwingMain"));
+        templateTypes.addAll(Arrays.asList("FXMain",
+                "FXML",
+                "FXPreloader",
+                "FXSwingMain"));
         Path fxSaveDir = saveDir.resolve("");       // copy
         genTemplates(fxSaveDir, "javafx", templateTypes);
 
         // Unit Tests
         templateTypes = new ArrayList<>();
-        templateTypes.addAll(Arrays.asList( "JUnit4TestClass",
-                                            "JUnit5TestClass",
-                                            "EmptyTestNGTest"));
+        templateTypes.addAll(Arrays.asList("JUnit4TestClass",
+                "JUnit5TestClass",
+                "EmptyTestNGTest"));
         Path unitSaveDir = saveDir.resolve("");       // copy
         genTemplates(unitSaveDir, "UnitTests", templateTypes);
     }
-    
-    
+
     /**
-     * Function to generate the templates and place them in their specified 
+     * Function to generate the templates and place them in their specified
      * folder
-     * 
+     *
      * @param saveDir path to save files to
      */
-    private void genTemplates(Path saveDir, String folder, List<String> templateTypes){
-        
-        // update the saveDirectory to the "classes" folder 
+    private void genTemplates(Path saveDir, String folder, List<String> templateTypes) {
+
+        // update the saveDirectory to the "classes" folder
         // make the saveDirectory able to be edited
         saveDir = saveDir.resolve(folder);
         saveDir.toFile().setWritable(true);
-        
-        try {            
+
+        try {
             // Create the folder directory for templates
             Files.createDirectories(saveDir);
-            
-            // Loop through the different templatestypes, copying each to the 
+
+            // Loop through the different templatestypes, copying each to the
             // saveDirectory in a .java form
             for (String templateType : templateTypes) {
                 InputStream in = getClass().getResourceAsStream("/resources/" + templateType + ".txt");
                 // System.out.println("Looking for " + templateType + " got " + in);
                 Files.copy(
-                    in,
-                    saveDir.resolve(templateType + ".java"),
-                    StandardCopyOption.REPLACE_EXISTING);
+                        in,
+                        saveDir.resolve(templateType + ".java"),
+                        StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
             System.out.println("Template copy error: " + e);
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }
-        
+
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BlazerIdLabel;
     private javax.swing.JTextField BlazerIdTextField;
