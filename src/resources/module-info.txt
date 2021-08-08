@@ -1,0 +1,11 @@
+/*
+ * Author: ${user}
+ * Assignment:  ${project.displayName} - ${course}
+ *
+ * Credits:  (if any for sections of code)
+ */
+ 
+<#if moduleName?? && moduleName != "">
+module ${moduleName} {
+}
+</#if>

@@ -6,6 +6,8 @@
  *          Joey Richardson <Rich0925@uab.edu>
  *          Darrin Wang <darrinw@uab.edu>
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.7.0 08/08/2021 dgg - Update for NetBeans 12.4 and improve templates
+ *                              With respect to superclasses, interfaces, etc.
  * Vers: 1.6.3 05/29/2020 dgg - Change back to NetBeans
  * Vers: 1.6.0 12/05/2019 dgg - CoolBeans renamed to OpenBeans
  * Vers: 1.5.0 01/18/2019 dgg - Add templates for JUnit 4 & 5, TestNG
@@ -231,7 +233,7 @@ public class Main extends javax.swing.JFrame {
             // Determine which os is being used..
             String os = System.getProperty("os.name");
             String nbu = System.getProperty("netbeans.user");
-            System.out.println(nbu);
+            // System.out.println(nbu);
             if (os.startsWith("Windows")) {
 
                 try {
@@ -409,6 +411,8 @@ public class Main extends javax.swing.JFrame {
                 "JApplet",
                 "Main",
                 "package-info",
+                "module-info",
+                "Record",
                 "Singleton"));
 
         Path cSaveDir = saveDir.resolve("");        // copy
