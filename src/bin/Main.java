@@ -6,6 +6,8 @@
  *          Joey Richardson <Rich0925@uab.edu>
  *          Darrin Wang <darrinw@uab.edu>
  * Assignment: Group GUI - EE333 Fall 2017
+ * Vers: 1.7.1 08/25/2021 dgg - Add more print statements to help diagnose issues,
+ *                              Improve robustness of folder selection
  * Vers: 1.7.0 08/08/2021 dgg - Update for NetBeans 12.4 and improve templates
  *                              With respect to superclasses, interfaces, etc.
  * Vers: 1.6.3 05/29/2020 dgg - Change back to NetBeans
@@ -232,10 +234,8 @@ public class Main extends javax.swing.JFrame {
         if ((!name.equals("")) && (!blazerID.equals("")) && (!initials.equals(""))) {
             // Determine which os is being used..
             String os = System.getProperty("os.name");
-            String nbu = System.getProperty("netbeans.user");
-            // System.out.println(nbu);
             if (os.startsWith("Windows")) {
-
+                System.out.println("In Windows Processing");
                 try {
                     // Get the "Appdata" environmental variable
                     String dir = System.getenv("AppData");
@@ -252,8 +252,10 @@ public class Main extends javax.swing.JFrame {
                     // Pick the right path based on testing for the NetBeans dir
                     if (dirFlatFile.exists()) {
                         direc = dirFlat;
+                        System.out.println("flat file");
                     } else if (dirRoamingFile.exists()) {
                         direc = dirRoaming;
+                        System.out.println("roaming");
                     } else {
                         throw new Exception("NetBeans dir is not in AppData nor in AppData\\Roaming");
                     }
@@ -264,9 +266,16 @@ public class Main extends javax.swing.JFrame {
 
                     // Get max folder by natural order (most recent version)
                     // Resolve to the templates folder
-                    Path tempPath = paths.max(Comparator.naturalOrder())
+                    Path tempPath = paths
+                            .filter(p -> {
+                                String folder = (p.getFileName()).getFileName().toString();
+                                return !(folder.startsWith("7.") || folder.startsWith("8.") || folder.startsWith("9."));
+                            })
+                            .max(Comparator.naturalOrder())
                             .get()
                             .resolve("config").resolve("Templates");
+
+                    System.out.println("Path resolved to " + tempPath);
 
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
@@ -280,6 +289,8 @@ public class Main extends javax.swing.JFrame {
                 }
             } else if (os.startsWith("Mac")) {
 
+                System.out.println("in Mac Processing");
+
                 try {
                     // Get the "HOME" environmental variable path
                     // navigate to the Netbeans folder inside
@@ -292,11 +303,19 @@ public class Main extends javax.swing.JFrame {
                     // filter to only include directories
                     Stream<Path> paths = Files.list(direc).filter(Files::isDirectory);
 
+                    // filter out paths that have are 7. or 8. or 9.
                     // get max folder by natural order (most recent version)
                     // resolve to the templates folder
-                    Path tempPath = paths.max(Comparator.naturalOrder())
+                    Path tempPath = paths
+                            .filter(p -> {
+                                String folder = (p.getFileName()).getFileName().toString();
+                                return !(folder.startsWith("7.") || folder.startsWith("8.") || folder.startsWith("9."));
+                            })
+                            .max(Comparator.naturalOrder())
                             .get()
                             .resolve("config").resolve("Templates");
+
+                    System.out.println("Path resolved to " + tempPath);
 
                     // get new files and put them in the tempPath
                     genPropertiesFile(tempPath);
@@ -457,7 +476,7 @@ public class Main extends javax.swing.JFrame {
             // saveDirectory in a .java form
             for (String templateType : templateTypes) {
                 InputStream in = getClass().getResourceAsStream("/resources/" + templateType + ".txt");
-                // System.out.println("Looking for " + templateType + " got " + in);
+                System.out.println("Looking for " + templateType + " got " + in);
                 Files.copy(
                         in,
                         saveDir.resolve(templateType + ".java"),
