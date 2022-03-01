@@ -1,7 +1,9 @@
-<#assign licenseFirst = "/*">
-<#assign licensePrefix = " * ">
-<#assign licenseLast = " */">
-<#include "${project.licensePath}">
+/*
+ * Author: ${user}
+ * Assignment:  ${project.displayName} - ${course}
+ *
+ * Credits:  (if any for sections of code)
+ */
 
 <#if package?? && package != "">
 package ${package};
